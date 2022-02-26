@@ -1,0 +1,143 @@
+CREATE TABLE [dbo].[users](
+	[users_id] [int] IDENTITY(1,1) NOT NULL,
+	[login] [varchar](16) NULL,
+	[password] [varchar](256) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[users_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
+
+
+
+
+
+
+
+
+CREATE TABLE [dbo].[chats](
+	[chats_id] [int] IDENTITY(1,1) NOT NULL,
+	[chats_name] [varchar](16) NULL,
+	[chats_admin_id] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[chats_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
+
+
+
+
+
+
+
+
+
+
+
+CREATE TABLE [dbo].[chats_users](
+	[chats_id] [int] NOT NULL,
+	[users_id] [int] NOT NULL
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[chats]  WITH CHECK ADD  CONSTRAINT [FK_chats_users] FOREIGN KEY([chats_admin_id])
+REFERENCES [dbo].[users] ([users_id])
+GO
+
+ALTER TABLE [dbo].[chats] CHECK CONSTRAINT [FK_chats_users]
+GO
+
+ALTER TABLE [dbo].[chats_users]  WITH CHECK ADD  CONSTRAINT [FK_chats_users_chats] FOREIGN KEY([chats_id])
+REFERENCES [dbo].[chats] ([chats_id])
+GO
+
+ALTER TABLE [dbo].[chats_users] CHECK CONSTRAINT [FK_chats_users_chats]
+GO
+
+ALTER TABLE [dbo].[chats_users]  WITH CHECK ADD  CONSTRAINT [FK_chats_users_users] FOREIGN KEY([users_id])
+REFERENCES [dbo].[users] ([users_id])
+GO
+
+ALTER TABLE [dbo].[chats_users] CHECK CONSTRAINT [FK_chats_users_users]
+GO
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CREATE TABLE [dbo].[invitations](
+	[invitations_id] [int] IDENTITY(1,1) NOT NULL,
+	[invitations_to_chat_id] [int] NULL,
+	[invitations_from_user_id] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[invitations_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[invitations]  WITH CHECK ADD  CONSTRAINT [FK_invitations_chats] FOREIGN KEY([invitations_to_chat_id])
+REFERENCES [dbo].[chats] ([chats_id])
+GO
+
+ALTER TABLE [dbo].[invitations] CHECK CONSTRAINT [FK_invitations_chats]
+GO
+
+ALTER TABLE [dbo].[invitations]  WITH CHECK ADD  CONSTRAINT [FK_invitations_users] FOREIGN KEY([invitations_from_user_id])
+REFERENCES [dbo].[users] ([users_id])
+GO
+
+ALTER TABLE [dbo].[invitations] CHECK CONSTRAINT [FK_invitations_users]
+GO
+
+
+
+
+
+
+
+
+
+
+
+
+
+CREATE TABLE [dbo].[messages](
+	[messages_id] [int] IDENTITY(1,1) NOT NULL,
+	[messages_text] [varchar](1000) NULL,
+	[users_id_sender] [int] NOT NULL,
+	[chats_id_reciever] [int] NOT NULL,
+	[messages_datetime] [datetime] NULL
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[messages]  WITH CHECK ADD  CONSTRAINT [FK_messages_chats] FOREIGN KEY([chats_id_reciever])
+REFERENCES [dbo].[chats] ([chats_id])
+GO
+
+ALTER TABLE [dbo].[messages] CHECK CONSTRAINT [FK_messages_chats]
+GO
+
+ALTER TABLE [dbo].[messages]  WITH CHECK ADD  CONSTRAINT [FK_messages_users] FOREIGN KEY([users_id_sender])
+REFERENCES [dbo].[users] ([users_id])
+GO
+
+ALTER TABLE [dbo].[messages] CHECK CONSTRAINT [FK_messages_users]
+GO
+
