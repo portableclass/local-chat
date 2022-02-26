@@ -1,0 +1,11 @@
+C:\Users\portableclass\source\repos\WCFChat\ChatHost\obj\Debug\ChatHost.csproj.AssemblyReference.cache
+C:\Users\portableclass\source\repos\WCFChat\ChatHost\obj\Debug\ChatHost.csproj.CoreCompileInputs.cache
+C:\Users\portableclass\source\repos\WCFChat\ChatHost\bin\Debug\ChatHost.exe.config
+C:\Users\portableclass\source\repos\WCFChat\ChatHost\bin\Debug\ChatHost.exe
+C:\Users\portableclass\source\repos\WCFChat\ChatHost\bin\Debug\ChatHost.pdb
+C:\Users\portableclass\source\repos\WCFChat\ChatHost\bin\Debug\WCFChat.dll
+C:\Users\portableclass\source\repos\WCFChat\ChatHost\obj\Debug\ChatHost.csproj.CopyComplete
+C:\Users\portableclass\source\repos\WCFChat\ChatHost\obj\Debug\ChatHost.exe
+C:\Users\portableclass\source\repos\WCFChat\ChatHost\obj\Debug\ChatHost.pdb
+C:\Users\portableclass\source\repos\WCFChat\ChatHost\bin\Debug\WCFChat.pdb
+C:\Users\portableclass\source\repos\WCFChat\ChatHost\bin\Debug\WCFChat.dll.config
