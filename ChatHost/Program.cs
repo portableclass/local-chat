@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ServiceModel;
 
 namespace ChatHost
@@ -9,7 +9,7 @@ namespace ChatHost
         {
             using (var host = new ServiceHost(typeof(WCFChat.ServiceChat)))
             {
-                host.Open();
+				host.Open();
                 Console.WriteLine("Host is started.");
                 Console.ReadLine();
             }

@@ -1,4 +1,3 @@
-﻿using System;
 using System.Data.SqlClient;
 using System.Windows;
 
@@ -6,7 +5,7 @@ namespace ChatClient
 {
     class DataBase
     {
-        SqlConnection sqlConnection = new SqlConnection(@"Server=localhost;Database=Test;Trusted_Connection=Yes;");
+        SqlConnection sqlConnection = new SqlConnection(@"Server=localhost;Database=LocalChat;Trusted_Connection=Yes;");
 
         public void OpenConnection()
         {
@@ -30,6 +29,7 @@ namespace ChatClient
                 sqlConnection.Close();
             }
         }
+
         public SqlConnection GetConnection()
         {
             return sqlConnection;

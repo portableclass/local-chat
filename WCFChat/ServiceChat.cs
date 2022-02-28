@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
 using WCFChat.Entities;
@@ -11,7 +11,12 @@ namespace WCFChat
         List<User> Users = new List<User>();
         int NextId = 1;
 
-        public int Connect(string nickname)
+		/// <summary>
+		/// метод для добавления пользователя в список подключенных к серверу
+		/// </summary>
+		/// <param name="nickname"></param>
+		/// <returns></returns>
+		public int Connect(string nickname)
         {
             User user = new User()
             {
@@ -25,20 +30,29 @@ namespace WCFChat
             return user.Id;
         }
 
-        public void Disconnect(int id)
+		/// <summary>
+		/// метод для исключения пользователя из списка подключенных к серверу
+		/// </summary>
+		/// <param name="id"></param>
+		public void Disconnect(int id)
         {
             User user = Users.FirstOrDefault(i => i.Id == id);
 
             if (user != null)
                 Users.Remove(user);
-
         }
 
-        public void SendMessage(Message message)
+		/// <summary>
+		/// метод для отправки сообщения пользователям, подключенным к серверу
+		/// </summary>
+		/// <param name="message"></param>
+		public void SendMessage(Message message)
         {
             foreach (User item in Users)
             {
-                item.OperationContext.GetCallbackChannel<IServiceChatCallback>().MessageCallback(message);
+                item.OperationContext.
+					GetCallbackChannel<IServiceChatCallback>().
+					MessageCallback(message);
             }
         }
     }

@@ -4,4 +4,3 @@ C:\Users\portableclass\source\repos\WCFChat\WCFChat\obj\Debug\WCFChat.csproj.Cor
 C:\Users\portableclass\source\repos\WCFChat\WCFChat\obj\Debug\WCFChat.dll
 C:\Users\portableclass\source\repos\WCFChat\WCFChat\obj\Debug\WCFChat.pdb
 C:\Users\portableclass\source\repos\WCFChat\WCFChat\bin\Debug\WCFChat.dll.config
-C:\Users\portableclass\source\repos\WCFChat\WCFChat\obj\Debug\WCFChat.csproj.AssemblyReference.cache

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Windows;
@@ -14,25 +13,23 @@ namespace ChatClient
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window, IServiceChatCallback
-    {
-        private bool isConnected = false;
+	{
+		private bool isConnected = false;
         private ServiceChatClient client;
         private DataBase dataBase = new DataBase();
         private User user = new User();
         private Chat chat = new Chat();
         private int userServerId;
-        //List<Message> test = new List<Message>();
-        //int chatId;
-        //string chatName;
-        //int ID;
-        //string nickname;
 
         public MainWindow()
         {
             InitializeComponent();
         }
 
-        private void ConnectUser()
+		/// <summary>
+		/// метод для подключения пользователя к серверу
+		/// </summary>
+		private void ConnectUser()
         {
             if (!isConnected)
             {
@@ -42,7 +39,10 @@ namespace ChatClient
             }
         }
 
-        private void DisconnectUser()
+		/// <summary>
+		/// метод для отключения пользователя
+		/// </summary>
+		private void DisconnectUser()
         {
             if (isConnected)
             {
@@ -59,9 +59,14 @@ namespace ChatClient
             }
         }
 
-        private void LoginButton_Click(object sender, RoutedEventArgs e)
+		/// <summary>
+		/// метод для идентификации пользователя при входе
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
-            if (LoginBox.Text.Length < 15 && LoginBox.Text.Length > 0)
+            if (LoginBox.Text.Length < 16 && LoginBox.Text.Length > 0)
             {
                 if (PasswordBox.Password.Length > 0)
                 {
@@ -92,9 +97,14 @@ namespace ChatClient
                 LoginMessageBlock.Visibility = Visibility.Hidden;
         }
 
-        private void AuthButton_Click(object sender, RoutedEventArgs e)
+		/// <summary>
+		/// метод для регистрации нового пользователя
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void AuthButton_Click(object sender, RoutedEventArgs e)
         {
-            if (AuthNicknameBox.Text.Length < 15 && AuthNicknameBox.Text.Length > 0)
+            if (AuthNicknameBox.Text.Length < 16 && AuthNicknameBox.Text.Length > 0)
             {
                 if (AuthPasswordBox.Password.Length > 0)
                 {
@@ -129,10 +139,13 @@ namespace ChatClient
                 AuthMessageBlock.Visibility = Visibility.Hidden;
         }
 
-        private void LoadChats()
+		/// <summary>
+		/// метод для получения и отображения списка чатов, в которых состоит пользователь
+		/// </summary>
+		private void LoadChats()
         {
             ContactsList.Items.Clear();
-            ChatsMessageBlock.Visibility = Visibility.Hidden;
+			ChatsMessageBlock.Visibility = Visibility.Hidden;
             DataTable dt = Select("SELECT [chats_id] FROM [dbo].[chats_users] WHERE [users_id] = '" + user.Id + "'");
             if (dt.Rows.Count > 0)
             {
@@ -154,7 +167,12 @@ namespace ChatClient
             Open(ContactsScreen);
         }
 
-        private void ContactsList_SelectionChanged(object sender, RoutedEventArgs e)
+		/// <summary>
+		/// метод, идентифицирующий в какой чат вошел пользователь
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void ContactsList_SelectionChanged(object sender, RoutedEventArgs e)
         {
             if (ContactsList.SelectedItem != null)
             {
@@ -172,7 +190,14 @@ namespace ChatClient
             }
         }
 
-        private void AddMessage(string msg, DateTime dt, HorizontalAlignment ha, string nn)
+		/// <summary>
+		/// метод для графического добавления сообщения в чат
+		/// </summary>
+		/// <param name="msg"></param>
+		/// <param name="dt"></param>
+		/// <param name="ha"></param>
+		/// <param name="nn"></param>
+		private void AddMessage(string msg, DateTime dt, HorizontalAlignment ha, string nn)
         {
             MessagesList.Items.Add(new Message()
             {
@@ -184,7 +209,11 @@ namespace ChatClient
             MessagesList.ScrollIntoView(MessagesList.Items[MessagesList.Items.Count - 1]);
         }
 
-        public void MessageCallback(Message message)
+		/// <summary>
+		/// метод для получения сообщений с сервера
+		/// </summary>
+		/// <param name="message"></param>
+		public void MessageCallback(Message message)
         {
             if (chat.Id == message.ChatRecieverId)
             {
@@ -200,8 +229,10 @@ namespace ChatClient
             }
         }
 
-
-        private void LoadMessages()
+		/// <summary>
+		/// метод для загрузки ранее отправленных сообщений
+		/// </summary>
+		private void LoadMessages()
         {
             MessagesList.Items.Clear();
             DataTable dt = Select("SELECT [messages_text],[users_id_sender],[messages_datetime] FROM [dbo].[messages] WHERE [chats_id_reciever] = " + chat.Id + " ORDER BY [messages_datetime] ASC");
@@ -226,7 +257,12 @@ namespace ChatClient
             }
         }
 
-        private void SendButton_Click(object sender, RoutedEventArgs e)
+		/// <summary>
+		/// метод для отправки сообщения на сервер
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void SendButton_Click(object sender, RoutedEventArgs e)
         {
             if (MessageBox.Text.Trim().Length == 0)
                 System.Windows.MessageBox.Show("Enter the text of the message", "Empty input", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -265,9 +301,14 @@ namespace ChatClient
             }
         }
 
-        private void CreateChat_Click(object sender, RoutedEventArgs e)
+		/// <summary>
+		/// метод загрузки чатов в локальных сети
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void CreateChat_Click(object sender, RoutedEventArgs e)
         {
-            if (NewChatName.Text.Length < 15 && NewChatName.Text.Length > 0)
+            if (NewChatName.Text.Length < 16 && NewChatName.Text.Length > 0)
             {
                 DataTable dt = Select("SELECT [chats_id] FROM [dbo].[chats] WHERE [chats_name] = '" + NewChatName.Text + "'");
                 if (dt.Rows.Count > 0)
@@ -292,7 +333,12 @@ namespace ChatClient
             }
         }
 
-        private void BrowseNetwork_Click(object sender, RoutedEventArgs e)
+		/// <summary>
+		/// метод загрузки чатов в локальных сети
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void BrowseNetwork_Click(object sender, RoutedEventArgs e)
         {
             ContactsAll.Items.Clear();
             NetworkChatsMessageBlock.Visibility = Visibility.Hidden;
@@ -343,7 +389,14 @@ namespace ChatClient
             Open(NetworkChats);
         }
 
-        private Button CheckUserRights(int adminId, bool isParticipant, bool isSent)
+		/// <summary>
+		/// метод для проверки прав пользователя
+		/// </summary>
+		/// <param name="adminId"></param>
+		/// <param name="isParticipant"></param>
+		/// <param name="isSent"></param>
+		/// <returns></returns>
+		private Button CheckUserRights(int adminId, bool isParticipant, bool isSent)
         {
             Button btn = new Button();
 
@@ -373,7 +426,12 @@ namespace ChatClient
             return btn;
         }
 
-        private void SendRequest_Click(object sender, RoutedEventArgs e)
+		/// <summary>
+		/// метод для отправки запроса на добавление в чат
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void SendRequest_Click(object sender, RoutedEventArgs e)
         {
             Button button = (Button)sender;
             DockPanel dp = (DockPanel)button.Parent;
@@ -388,7 +446,12 @@ namespace ChatClient
             BrowseNetwork_Click(null, null);
         }
 
-        private void Moderate_Click(object sender, RoutedEventArgs e)
+		/// <summary>
+		/// метод открытия страницы модерации чата, просмотра списка запросов на добавление новых пользователей, а также просмотр списка пользователей, уже участвующих в чате
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void Moderate_Click(object sender, RoutedEventArgs e)
         {
             Requests.Items.Clear();
             UsersList.Items.Clear();
@@ -448,7 +511,12 @@ namespace ChatClient
             Open(ModerateScreen);
         }
 
-        private void AcceptRequest_Click(object sender, RoutedEventArgs e)
+		/// <summary>
+		/// метод, срабатывающий при принятии запроса на добавление пользователя в чат
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void AcceptRequest_Click(object sender, RoutedEventArgs e)
         {
             Button button = (Button)sender;
             DockPanel dp = (DockPanel)button.Parent;
@@ -464,12 +532,22 @@ namespace ChatClient
             Moderate_Click(null, null);
         }
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+		/// <summary>
+		/// метод, срабатывающий при закрытии клиентского приложения и отключающий его от сервера
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             DisconnectUser();
         }
 
-        public DataTable Select(string selectSQL)
+		/// <summary>
+		/// метод для получения результатов запроса к базе данных
+		/// </summary>
+		/// <param name="selectSQL"></param>
+		/// <returns></returns>
+		private DataTable Select(string selectSQL)
         {
             DataTable dataTable = new DataTable("dataBase");
             dataBase.OpenConnection();
@@ -488,7 +566,11 @@ namespace ChatClient
             return dataTable;
         }
 
-        public void Insert(string insertSQL)
+		/// <summary>
+		/// метод для реализации вставки данных в базу данных
+		/// </summary>
+		/// <param name="insertSQL"></param>
+		private void Insert(string insertSQL)
         {
             dataBase.OpenConnection();
             SqlCommand cmd = new SqlCommand();
@@ -497,7 +579,11 @@ namespace ChatClient
             cmd.ExecuteNonQuery();
         }
 
-        private void Open(Border screen)
+		/// <summary>
+		/// метод для открытия нового графического окна
+		/// </summary>
+		/// <param name="screen"></param>
+		private void Open(Border screen)
         {
             LoginScreen.Visibility = Visibility.Hidden;
             AuthScreen.Visibility = Visibility.Hidden;
@@ -510,7 +596,12 @@ namespace ChatClient
             screen.Visibility = Visibility.Visible;
         }
 
-        private void Navigation_Click(object sender, RoutedEventArgs e)
+		/// <summary>
+		/// метод для перемещения между окнами клиентского приложения
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void Navigation_Click(object sender, RoutedEventArgs e)
         {
             Button btn = (Button)sender;
             switch (btn.Content)
@@ -538,6 +629,10 @@ namespace ChatClient
                     ContactsList.UnselectAll();
                     Open(ContactsScreen);
                     break;
+				case "Help":
+					System.Windows.MessageBox.Show("The program is designed for \ncommunication between multiple \nusers on a local network.\n\n" +
+						"The program was written \nas a course project by a student\nof group 32919/1 \nYashutkin Alexey\n2022", "Help", MessageBoxButton.OK, MessageBoxImage.Information);
+					break;
                 default:
                     break;
             }
